@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
-
+  before_action :set_status, only: [:index,:create, :new, :edit, :update, :destroy]
   def index
     @tasks = Task.all
   end
@@ -46,7 +46,12 @@ class TasksController < ApplicationController
       @task = Task.find(params[:id])
     end
 
+    def set_status
+      @status = Status.find_by(id: params[:status_id])
+    end
     def task_params
       params.require(:task).permit(:start_time, :end_time, :output_screenshot, :status_id)
     end
+
+
 end

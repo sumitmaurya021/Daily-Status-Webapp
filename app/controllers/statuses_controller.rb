@@ -1,6 +1,8 @@
 # app/controllers/statuses_controller.rb
 class StatusesController < ApplicationController
   before_action :set_status, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_employee!
+
 
   def index
     @statuses = Status.all
@@ -48,6 +50,10 @@ class StatusesController < ApplicationController
     end
 
     def status_params
-      params.require(:status).permit(:employee_id,:github_pr_link, :employee_id)
+      params.require(:status).permit(:employee_id,:github_pr_link)
+    end
+
+    def current_employee
+      @current_employee ||= Employee.find_by(id: session[:employee_id])
     end
 end

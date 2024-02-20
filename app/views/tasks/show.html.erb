@@ -1,27 +1,26 @@
 <p>
-    <strong>Start Time:</strong>
-    <%= @task.start_time %>
-  </p>
-  
-  <p>
-    <strong>End Time:</strong>
-    <%= @task.end_time %>
-  </p>
-  
-  <p>
-    <strong>Output Screenshot:</strong>
-    <% if @task.output_screenshot.attached? %>
-      <%= image_tag(@task.output_screenshot, class: "screenshot") %>
-    <% else %>
-      <em>No screenshot available</em>
-    <% end %>
-  </p>
-  
-  <p>
-    <strong>Status:</strong>
-    <%= @task.status.github_pr_link %>
-  </p>
-  
-  <%= link_to 'Edit', edit_task_path(@task) %> |
-  <%= link_to 'Back', tasks_path %>
-  
+  <strong>Start Time:</strong>
+  <%= @task.start_time %>
+</p>
+
+<p>
+  <strong>End Time:</strong>
+  <%= @task.end_time %>
+</p>
+
+<p>
+  <strong>Output Screenshot:</strong>
+  <% if @task.output_screenshot.attached? %>
+    <%= image_tag(@task.output_screenshot, class: "screenshot") %>
+  <% else %>
+    <em>No screenshot available</em>
+  <% end %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @task.status.github_pr_link %>
+</p>
+
+<%= link_to 'Edit', edit_task_path(@task) %> |
+<%= link_to 'Back', tasks_path %>

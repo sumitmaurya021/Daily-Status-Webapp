@@ -1,7 +1,5 @@
 class EmployeesController < ApplicationController
   before_action :set_employee, only: [:show, :edit, :update, :destroy]
-  before_action :require_admin, only: [:index, :destroy]
-  skip_before_action :authenticate_employee!, only: [:new, :create]
 
   def index
     @employees = Employee.all
@@ -9,20 +7,6 @@ class EmployeesController < ApplicationController
 
   def show
     @statuses = @employee.statuses.order(created_at: :desc)
-  end
-
-  def new
-    @employee = Employee.new
-  end
-
-  def create
-    @employee = Employee.new(employee_params)
-    if @employee.save
-      flash[:notice] = "Employee created successfully"
-      redirect_to employee_path(@employee)
-    else
-      render :new, status: :unprocessable_entity
-    end
   end
 
   def edit
@@ -79,7 +63,4 @@ class EmployeesController < ApplicationController
     params.require(:employee).permit(:first_name, :last_name, :email, :password, :admin)
   end
 
-  def require_admin
-    redirect_to root_path unless current_employee && current_employee.admin?
-  end
 end

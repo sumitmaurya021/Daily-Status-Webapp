@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
+  devise_for :employees
+  # devise_for :employees
 
-  root to: "sessions#new"
-
-  get '/login', to: 'sessions#new', as: :login
-  post '/login', to: 'sessions#create'
-  delete '/logout', to: 'sessions#destroy', as: :logout
-  get '/signup', to: 'employees#new', as: 'signup'
+  # devise_for :employees, controllers: {
+  #   sessions: 'employees/sessions',
+  #   registrations: 'employees/registrations'
+  # }
 
   resources :employees do
     member do
@@ -13,8 +13,10 @@ Rails.application.routes.draw do
       get "filter_by_year"
       get "filter_by_month"
       get "resolve_remarks"
+      get "dashboard"
     end
   end
   resources :tasks
   resources :statuses
+  resources :employees
 end

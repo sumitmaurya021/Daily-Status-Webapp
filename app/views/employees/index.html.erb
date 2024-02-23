@@ -1,0 +1,21 @@
+
+
+<% if current_employee %>
+
+    <%= current_employee.name %>
+    <%= current_employee.role %>
+
+    <% else %>
+        
+    <%= link_to "Login" , new_employee_session_path %>
+
+<% end %>
+
+<%= link_to "Logout" , destroy_employee_session_path , data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
+    
+
+<% @employees.each do |employee| %>
+
+<h1>HEllo <%= employee.name %> Role <%= employee.role %></h1>
+
+<% end %>

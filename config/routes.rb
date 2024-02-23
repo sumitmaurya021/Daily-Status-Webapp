@@ -7,6 +7,10 @@ Rails.application.routes.draw do
   #   registrations: 'employees/registrations'
   # }
 
+    root to: "employees#index"
+
+    # get 'admin/dashboard', to: 'admin#dashboard', as: 'admin_dashboard'
+
   resources :employees do
     member do
       get "filter_by_date"

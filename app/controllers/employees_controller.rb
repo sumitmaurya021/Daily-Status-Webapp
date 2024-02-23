@@ -5,6 +5,7 @@ class EmployeesController < ApplicationController
     @employees = Employee.all
   end
 
+
   def show
     @statuses = @employee.statuses.order(created_at: :desc)
   end

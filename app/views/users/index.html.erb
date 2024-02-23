@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+<% if current_user %>
+
+<% if current_user.admin? %>
+  <p>Ye admin hai</p>
+<% else %>
+  <p>Ye employee hai</p>
+<% end %>
+
+<% end %>
+
+
+<%= link_to "Check Out", checkouts_path, data: { turbo_method: :post } %>
+
+<%= link_to "Log Out", destroy_user_session_path, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+

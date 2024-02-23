@@ -7,7 +7,7 @@
 
 <p>
   <strong>Employee:</strong>
-  <%= @status.employee&.first_name || "Unknown" %>
+  <%= @status.user&.name || "Unknown" %>
 </p>
 
 <%= link_to 'Edit', edit_status_path(@status) %> |

@@ -1,7 +1,5 @@
-# app/controllers/statuses_controller.rb
 class StatusesController < ApplicationController
   before_action :set_status, only: [:show, :edit, :update, :destroy]
-
   def index
     @statuses = Status.all
   end
@@ -10,12 +8,11 @@ class StatusesController < ApplicationController
   end
 
   def new
-    @status = Status.new
+    @status = current_user.statuses.build
   end
 
   def create
-    @status = Status.new(status_params)
-
+    @status = current_user.statuses.build(status_params)
     if @status.save
       flash[:notice] = "Status created successfully"
       redirect_to @status
@@ -43,11 +40,13 @@ class StatusesController < ApplicationController
   end
 
   private
-    def set_status
-      @status = Status.find(params[:id])
-    end
 
-    def status_params
-      params.require(:status).permit(:employee_id,:github_pr_link)
-    end
+  def set_status
+    @status = Status.find(params[:id])
+  end
+
+  def status_params
+    params.require(:status).permit(:github_pr_link)
+  end
+
 end

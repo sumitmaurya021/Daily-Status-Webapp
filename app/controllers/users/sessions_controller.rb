@@ -12,6 +12,7 @@ class Users::SessionsController < Devise::SessionsController
   def create
     super do |user|
       AdminMailer.check_in_email(user, user.current_sign_in_at).deliver_now
+      statuses_path
     end
   end
 

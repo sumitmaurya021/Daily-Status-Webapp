@@ -2,22 +2,32 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
   before_action :set_status, only: [:index,:create, :new, :edit, :update, :destroy]
   def index
-    @tasks = Task.all
+    redirect_to statuses_path
   end
 
   def show
   end
 
   def new
-    @task = Task.new
+    @user = current_user
+  @status = Status.find_by(id: params[:status_id])
+
+  if @status.nil?
+    flash[:alert] = "Status not found"
+    redirect_to statuses_path
+  else
+    @task = @status.tasks.build
+  end
   end
 
   def create
-    @task = Task.new(task_params)
+    @status = Status.find(params[:status_id])
+    @task = @status.tasks.build(task_params)
     if @task.save
       flash[:notice] = "Task created successfully"
-      redirect_to @task
+      redirect_to status_path(@status)
     else
+      flash.now[:alert] = "Failed to create task"
       render :new, status: :unprocessable_entity
     end
   end
@@ -48,7 +58,7 @@ class TasksController < ApplicationController
     def set_status
       @status = Status.find_by(id: params[:status_id])
     end
-    def task_params
-      params.require(:task).permit(:start_time, :end_time, :output_screenshot, :status_id)
-    end
+      def task_params
+        params.require(:task).permit(:start_time, :end_time, :title, :description, :output_screenshot, :status_id)
+      end
 end

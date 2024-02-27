@@ -34,5 +34,6 @@
 <% end %>
 
 <%= link_to 'Create New Task', new_task_path(status_id: @status.id) %>
+<%= link_to 'Add Remarks', new_remark_path(status_id: @status.id) %>
 <%= link_to 'Edit', edit_status_path(@status) %> |
 <%= link_to 'Back', statuses_path %>

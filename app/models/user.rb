@@ -3,6 +3,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :statuses
+  has_many :remarks, through: :statuses
 
 
   def admin?
@@ -13,4 +14,11 @@ class User < ApplicationRecord
     role == "employee"
   end
 
+  after_create :set_default_status
+
+  private
+
+  def set_default_status
+    self.statuses.create(status: "Pending")
+  end
 end

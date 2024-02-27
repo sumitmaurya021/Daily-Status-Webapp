@@ -1,5 +1,5 @@
 class StatusesController < ApplicationController
-  before_action :set_status, only: [:show, :edit, :update, :destroy]
+  before_action :set_status, only: [:show, :edit, :update, :destroy, :resolve]
   def index
     @user = current_user
     if current_user.admin?
@@ -7,6 +7,7 @@ class StatusesController < ApplicationController
     else
       @statuses = current_user.statuses
     end
+    @remarks = Remark.includes(:status).where(status_id: @statuses.pluck(:id))
   end
 
   def show
@@ -45,6 +46,13 @@ class StatusesController < ApplicationController
     redirect_to statuses_path
   end
 
+  def resolve
+    @remark = @status.remarks.where(params[:id, :status_id])
+    @status.update(status: "Resolved")
+    flash[:notice] = "Status resolved successfully"
+    redirect_to statuses_path
+  end
+
   private
 
   def set_status
@@ -52,7 +60,7 @@ class StatusesController < ApplicationController
   end
 
   def status_params
-    params.require(:status).permit(:github_pr_link, :date, :user_id, :remarks, tasks_attributes: [:id, :start_time, :end_time, :title, :description, :output_screenshot])
+    params.require(:status).permit(:github_pr_link, :date, :user_id, :remark_id, tasks_attributes: [:id, :start_time, :end_time, :title, :description, :output_screenshot])
   end
 
 end

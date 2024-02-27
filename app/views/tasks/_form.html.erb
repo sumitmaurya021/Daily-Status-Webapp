@@ -1,19 +1,20 @@
-<%= form_with(model: task, local: true) do |form| %>
-  <% if task.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
+<% if task.errors.any? %>
+<div id="error_explanation">
+  <h2><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
 
-      <ul>
-        <% task.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <ul>
+    <% task.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+<%= form_with(model: [@status, @task], local: true) do |form| %>
   
   <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+    <%= form.label :title %>
+    <%= form.text_field :title %>
   </div>
 
   <div class="field">
@@ -34,11 +35,6 @@
   <div class="field">
     <%= form.label :output_screenshot %>
     <%= form.file_field :output_screenshot %>
-  </div>
-
-  <div class="field">
-    <%= form.label :status_id %>
-    <%= form.collection_select :status_id, Status.all, :id, :github_pr_link %>
   </div>
 
   <div class="actions">

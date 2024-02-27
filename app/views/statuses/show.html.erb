@@ -10,5 +10,29 @@
   <%= @status.user&.name || "Unknown" %>
 </p>
 
+<% if @status.tasks.any? %>
+  <h3>Tasks:</h3>
+  <ul>
+    <% @status.tasks.each do |task| %>
+    <tr>
+      <td><%= task.start_time.strftime("%Y-%m-%d") %></td>
+      <td><%= task.end_time.strftime("%Y-%m-%d") %></td>
+      <td>
+        <% if task.output_screenshot.attached? %>
+          <%= image_tag(task.output_screenshot, class: "screenshot", style: "width: 200px") %>
+        <% end %>
+      </td>
+      <td><%= link_to task.status.github_pr_link, task.status.github_pr_link %></td>
+      <td><%= link_to 'Show', task %></td>
+      <td><%= link_to 'Edit', edit_task_path(task) %></td>
+      <td><%= link_to 'Destroy', task, data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } %></td>
+    </tr>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No tasks associated with this status.</p>
+<% end %>
+
+<%= link_to 'Create New Task', new_task_path(status_id: @status.id) %>
 <%= link_to 'Edit', edit_status_path(@status) %> |
 <%= link_to 'Back', statuses_path %>

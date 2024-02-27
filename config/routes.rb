@@ -9,5 +9,10 @@ Rails.application.routes.draw do
 
   resources :tasks
   resources :statuses
+
+  resources :statuses do
+    resources :tasks
+  end
+
   resources :users
 end

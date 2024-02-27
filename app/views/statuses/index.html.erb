@@ -4,16 +4,21 @@
   <thead>
     <tr>
       <th>GitHub PR Link</th>
+      <th>Date</th>
       <th>Employee</th>
-      <th colspan="3"></th>
+      <th>Remarks</th>
+      <th colspan="3">Actions</th>
     </tr>
   </thead>
   <tbody>
     <% @statuses.each do |status| %>
       <tr>
-        <td><%= status.github_pr_link %></td>
-        <td><%= status.date %></td>
+        <td><%= link_to status.github_pr_link, status.github_pr_link %></td>
+        <td><%= status.date.strftime('%d-%m-%Y %p') %></td>
         <td><%= status.user ? status.user.name : 'User not available' %></td>
+        <td>
+          
+        </td>
         <td><%= link_to 'Show', status %></td>
         <td><%= link_to 'Edit', edit_status_path(status) %></td>
         <td><%= link_to 'Destroy', status, data: {
@@ -24,7 +29,5 @@
     <% end %>
   </tbody>
 </table>
-
 <br>
-
 <%= link_to 'New Status', new_status_path %>

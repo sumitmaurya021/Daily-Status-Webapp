@@ -1,8 +1,8 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
-  before_action :set_status, only: [:index,:create, :new, :edit, :update, :destroy]
+  before_action :set_status, only: [:index, :create, :new, :edit, :update, :destroy]
+
   def index
-    redirect_to statuses_path
   end
 
   def show
@@ -10,8 +10,6 @@ class TasksController < ApplicationController
 
   def new
     @user = current_user
-  @status = Status.find_by(id: params[:status_id])
-
   if @status.nil?
     flash[:alert] = "Status not found"
     redirect_to statuses_path

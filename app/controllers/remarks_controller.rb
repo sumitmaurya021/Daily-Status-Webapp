@@ -7,7 +7,6 @@ class RemarksController < ApplicationController
 
     if @status.nil?
       redirect_to statuses_path, alert: 'Status not found'
-      return
     end
 
     @remark = @status.remarks.build(remark_params)

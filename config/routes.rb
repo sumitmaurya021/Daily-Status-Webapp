@@ -9,9 +9,15 @@ Rails.application.routes.draw do
 
   resources :tasks
   resources :statuses
+  resources :remarks
 
   resources :statuses do
     resources :tasks
+    resources :remarks, only: [:create, :update, :destroy]
+    member do
+      get 'resolve', to: 'statuses#resolve', as: :resolve_status
+      get 'complete', to: 'statuses#complete', as: :complete_status
+    end
   end
 
   resources :users

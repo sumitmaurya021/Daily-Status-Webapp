@@ -18,6 +18,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def dashboard
+    @user = current_user
+  end
+
   private
   def user_params
     params.require(:user).permit(:name, :role)

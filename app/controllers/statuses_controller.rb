@@ -11,6 +11,7 @@ class StatusesController < ApplicationController
   end
 
   def show
+    @user = current_user
   end
 
   def new
@@ -22,7 +23,7 @@ class StatusesController < ApplicationController
     @status.user = current_user
     if @status.save
       flash[:notice] = "Status created successfully"
-      redirect_to status_path(@status)
+      redirect_to statuses_path
     else
       render :new, status: :unprocessable_entity
     end

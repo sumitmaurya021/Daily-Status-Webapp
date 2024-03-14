@@ -1,6 +1,3 @@
-<!-- app/views/tasks/edit.html.erb -->
-
-<!-- app/views/tasks/new.html.erb -->
 <div class="status-design">
     <div class="status-design-left">
       <h3 class="text-white p-2">Daily Status Webapp</h3>
@@ -17,17 +14,17 @@
   
     <div class="status-design-right status-design-1">
       <div class="statusheader">
-        <p class="text-end m-0 p-2"><%= current_user.name %></p>
-      </div>
-      <div>
-          <h1>Edit Task</h1>
-          <%= render 'form', task: @task %>
-
+        <div class="dropdown d-flex justify-content-end">
+          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <p class="text-end m-0 p-2"><%= current_user.name %></p>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/">Profile</a></li>
+            <li><a class="dropdown-item" href="/">Setting</a></li>
+            <%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "dropdown-item" %>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
   
-
-
-
-

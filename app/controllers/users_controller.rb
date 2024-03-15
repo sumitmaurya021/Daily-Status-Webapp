@@ -1,33 +1,23 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update]
-
-  def index
-  end
-
-  def show
-  end
-
-  def edit
-  end
-
-  def update
-    if @user.update(user_params)
-      redirect_to @user
-    else
-      render :edit, status: :unprocessable_entity
-    end
-  end
-
   def dashboard
     @user = current_user
-  end
+    @employees_present_count = User.where(role: 'employee').count
+    @total_employees_count = User.count
+    # View Reviews Data
+    @pending_reviews_count = Status.where(status: 'pending').count
+    @completed_reviews_count = Status.where(status: 'completed').count
+    @total_reviews_count = Status.count
 
-  private
-  def user_params
-    params.require(:user).permit(:name, :role)
-  end
-
-  def set_user
-    @user = User.find(params[:id])
+    # Data for only Employee
+    # Assuming current_user.id represents the employee's ID
+    employee_id = current_user.id
+    # Pending Reviews Count for the current employee
+    @current_employees_pending_reviews_count = Status.where(user_id: employee_id, status: 'pending').count
+    # Completed Reviews Count for the current employee
+    @current_employees_completed_reviews_count = Status.where(user_id: employee_id, status: 'completed').count
+    # Total Reviews Count for the current employee
+    @current_employees_total_reviews_count = Status.where(user_id: employee_id).count
+    # View Logs
+    @logs = Log.all
   end
 end

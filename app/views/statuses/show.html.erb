@@ -1,39 +1,81 @@
 <!-- app/views/statuses/show.html.erb -->
-<p>
-  <strong>GitHub PR Link:</strong>
-  <%= @status.github_pr_link %>
-  <%= @status.date %>
-</p>
 
-<p>
-  <strong>Employee:</strong>
-  <%= @status.user&.name || "Unknown" %>
-</p>
+<div class="status-design">
+  <div class="status-design-left">
+    <h3 class="text-white p-2">Daily Status Webapp</h3>
+    <h2 class="text-white p-2"><%= @user.name %></h2>
+    <p class="borderdeignstatus"></p>
 
-<% if @status.tasks.any? %>
-  <h3>Tasks:</h3>
-  <ul>
-    <% @status.tasks.each do |task| %>
-    <tr>
-      <td><%= task.start_time.strftime("%Y-%m-%d") %></td>
-      <td><%= task.end_time.strftime("%Y-%m-%d") %></td>
-      <td>
-        <% if task.output_screenshot.attached? %>
-          <%= image_tag(task.output_screenshot, class: "screenshot", style: "width: 200px") %>
+    <div class="d-flex flex-column gap-3 p-2">
+      <h3><%= link_to 'Dashboard', root_path, class: "btn btn-primary" %></h3>
+      <h3><%= link_to 'Statuses', statuses_path, class: "btn btn-primary" %></h3>
+      <h3><%= link_to 'New Status', new_status_path, class: "btn btn-primary" %></h3>
+      <h3><%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-primary" %></h3>
+    </div>
+  </div>
+
+  <div class="status-design-right status-design-1">
+    <div class="statusheader">
+      <div class="dropdown d-flex justify-content-end">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <p class="text-end m-0 p-2"><%= current_user.name %></p>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li><a class="dropdown-item" href="#">Setting</a></li>
+          <%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "dropdown-item" %>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-4 p-3 d-flex gap-5 statusboxshadow">
+      <h5>github_pr_link : <%= link_to @status.github_pr_link,  @status.github_pr_link   %></h5>
+      <h5>Employee :  <%= @status.user&.name || "Unknown" %></h5>
+      <h5>Date : <%= @status.date.strftime("%Y-%m-%d") %></h5>
+    </div>
+    <div>
+      <div class="d-flex justify-content-between p-3 mt-4">
+        <h3>Tasks:</h3>
+        <%= link_to 'Create New Task', new_task_path(status_id: @status.id), class: "btn btn-primary" %>
+      </div>
+      <div class="row gx-0 justify-content-center gap-4">
+        <% if @status.tasks.any? %>
+          <% @status.tasks.each do |task| %>
+            <div class="card mb-3 col-md-5" style="max-width: 540px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+              <div class="card-header d-flex justify-content-between">
+                <div>
+                  <%= @status.user&.name %>
+                </div>
+                <div>
+                  <%= link_to 'Show', task, class: "btn btn-sm btn-info" %>
+                  <%= link_to 'Edit', edit_task_path(task), class: "btn btn-sm btn-warning" %>
+                  <%= link_to 'Destroy', task, data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: "btn btn-sm btn-danger" %>
+                </div>
+              </div>
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <% if task.output_screenshot.attached? %>
+                  <%= image_tag(task.output_screenshot, class: "screenshot", style: "width: 100%; margin: 4px;") %>
+                  <% end %>
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <div class="mx-2">
+                      <h5 class="card-title"><%= link_to task.title, task_path(task) %></h5>
+                      <p class="card-text"><%= task.description %></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer text-body-secondary d-flex justify-content-between">
+                <p class="m-0">Start Time: <%= task.start_time.strftime("%Y-%m-%d") %></p>
+                <p class="m-0">End Time: <%= task.end_time.strftime("%Y-%m-%d") %></p>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <p>No tasks associated with this status.</p>
         <% end %>
-      </td>
-      <td><%= link_to task.status.github_pr_link, task.status.github_pr_link %></td>
-      <td><%= link_to 'Show', task %></td>
-      <td><%= link_to 'Edit', edit_task_path(task) %></td>
-      <td><%= link_to 'Destroy', task, data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } %></td>
-    </tr>
-    <% end %>
-  </ul>
-<% else %>
-  <p>No tasks associated with this status.</p>
-<% end %>
-
-<%= link_to 'Create New Task', new_task_path(status_id: @status.id) %>
-<%= link_to 'Add Remarks', new_remark_path(status_id: @status.id) %>
-<%= link_to 'Edit', edit_status_path(@status) %> |
-<%= link_to 'Back', statuses_path %>
+      </div>
+    </div>
+  </div>
+</div>

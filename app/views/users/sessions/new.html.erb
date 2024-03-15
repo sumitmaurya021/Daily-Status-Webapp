@@ -5,16 +5,18 @@
     <%= image_tag 'back.jpeg', class: "img-fluid session-background" %>
   </div>
 
-  <div class="d-flex flex-column gap-3">
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-    <h2 class="m-auto">Log in</h2>
+  <div class="d-flex flex-column gap-3 logindesign">
+    <div class="designForm">
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <h2 class="m-auto logintext"> <i class="fa-solid fa-right-to-bracket" style="color: #000000;"></i> <p class="m-0">Log in</p> </h2>
+    <p class="borderdeign"></p>
   <div class="field d-flex flex-column">
-    <%= f.label :email, class: "form-label" %><br />
+    <%= f.label :email, class: "form-label m-0 mb-2" %>
     <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
   </div>
 
   <div class="field d-flex flex-column">
-    <%= f.label :password, class: "form-label" %><br />
+    <%= f.label :password, class: "form-label m-0 mt-2 mb-2" %>
     <%= f.password_field :password, autocomplete: "current-password", class: "form-control" %>
   </div>
 
@@ -30,6 +32,7 @@
   </div>
 <% end %>
 <%= render "users/shared/links" %>
+</div>
 </div>
 </div>
 </div>

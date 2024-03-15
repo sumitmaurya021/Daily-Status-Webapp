@@ -1,26 +1,58 @@
-<p>
-  <strong>Start Time:</strong>
-  <%= @task.start_time %>
-</p>
+<!-- app/views/tasks/new.html.erb -->
+<div class="status-design">
+  <div class="status-design-left">
+    <h3 class="text-white p-2">Daily Status Webapp</h3>
+    
+    <p class="borderdeignstatus"></p>
 
-<p>
-  <strong>End Time:</strong>
-  <%= @task.end_time %>
-</p>
+    <div class="d-flex flex-column gap-3 p-2">
+      <h3><%= link_to 'Dashboard', root_path, class: "btn btn-primary" %></h3>
+      <h3><%= link_to 'Statuses', statuses_path, class: "btn btn-primary" %></h3>
+      <h3><%= link_to 'New Status', new_status_path, class: "btn btn-primary" %></h3>
+      <h3><%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-primary" %></h3>
+    </div>
+  </div>
 
-<p>
-  <strong>Output Screenshot:</strong>
-  <% if @task.output_screenshot.attached? %>
-    <%= image_tag(@task.output_screenshot, class: "screenshot") %>
-  <% else %>
-    <em>No screenshot available</em>
-  <% end %>
-</p>
-
-<p>
-  <strong>Status:</strong>
-  <%= @task.status.github_pr_link %>
-</p>
-
-<%= link_to 'Edit', edit_task_path(@task) %> |
-<%= link_to 'Back', tasks_path %>
+  <div class="status-design-right status-design-1">
+    <div class="statusheader">
+      <p class="text-end m-0 p-2"><%= current_user.name %></p>
+    </div>
+    <div class="p-5">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <div class="dropdown d-flex justify-content-end">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <p class="text-end m-0 p-2"><%= current_user.name %></p>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Profile</a></li>
+                  <li><a class="dropdown-item" href="#">Setting</a></li>
+                  <%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "dropdown-item" %>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <%= link_to 'Edit', edit_task_path(@task), class: "btn btn-sm btn-warning" %>
+              <%= link_to 'Destroy', @task, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-danger" %>
+            </div>            
+          </div>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title">Title : <%= @task.title %></h2>
+          <h2 class="card-text">Description : <%= @task.description %></h2>
+          <p>github_pr_link : <%= link_to @task.status.github_pr_link, @task.status.github_pr_link %></p>
+          <p class="card-text"><small class="text-body-secondary">Start Time: <%= @task.start_time.strftime("%I:%M %p") %></small></p><p class="card-text"><small class="text-body-secondary">End Time: <%= @task.end_time.strftime("%I:%M %p") %></small></p>
+        </div>
+        <div style="width: 100%;">
+        <% if @task.output_screenshot.attached? %>
+        <%= image_tag(@task.output_screenshot, class: "screenshot", style: "width: 100%;") %>
+      <% else %>
+        <em>No screenshot available</em>
+      <% end %>
+    </div>
+      </div>
+    </div>
+  </div>
+</div>

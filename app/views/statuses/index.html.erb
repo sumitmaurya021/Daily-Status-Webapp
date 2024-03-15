@@ -1,40 +1,50 @@
-<h1>All Statuses</h1>
+<div class="status-design">
+  <div class="status-design-left">
+    <h3 class="text-white p-2">Daily Status Webapp</h3>
+    <h2 class="text-white p-2"><%= @user.name %></h2>
+    <p class="borderdeignstatus"></p>
 
-<table>
-  <thead>
-    <tr>
-      <th>GitHub PR Link</th>
-      <th>Date</th>
-      <th>Employee</th>
-      <th>Remarks</th>
-      <th colspan="3">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @statuses.each do |status| %>
-      <tr>
-        <td><%= link_to status.github_pr_link, status.github_pr_link %></td>
-        <td><%= status.date.strftime('%d-%m-%Y %p') %></td>
-        <td><%= status.user ? status.user.name : 'User not available' %></td>
-        <td>
-          <% remarks = @remarks.select { |remark| remark.status_id == status.id } %>
-            <% remarks.each do |remark| %>
-            <p><%= remark.content %></p>
-          <% end %>
-        </td>
-        <td><%= link_to 'Show', status %></td>
-        <td><%= link_to 'Edit', edit_status_path(status) %></td>
-        <td><%= link_to 'Destroy', status, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %></td>
-        <td>
-          <% if current_user.admin? && status.status == "Resolved" %>
-            <%= link_to 'Set as Completed', complete_status_path(status), method: :patch %>
-          <% elsif current_user.employee? && status.status == "Pending" %>
-            <%= link_to 'Resolve', resolve_status_status_path(status), method: :patch %>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-<br>
-<%= link_to 'New Status', new_status_path %>
+    <div class="d-flex flex-column gap-3 p-2">
+      <h3><%= link_to 'Dashboard', root_path, class: "btn btn-primary" %></h3>
+      <h3><%= link_to 'Statuses', statuses_path, class: "btn btn-primary" %></h3>
+      <h3><%= link_to 'New Status', new_status_path, class: "btn btn-primary" %></h3>
+      <h3><%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-primary" %></h3>
+    </div>
+  </div>
+
+  <div class="status-design-right status-design-1">
+    <div class="statusheader">
+      <div class="dropdown d-flex justify-content-end">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <p class="text-end m-0 p-2"><%= current_user.name %></p>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li><a class="dropdown-item" href="#">Setting</a></li>
+          <%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "dropdown-item" %>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-4 p-3">
+      <% @statuses.each do |status| %>
+        <div class="card text-center mb-5 statusshadow">
+          <div class="card-header text-start d-flex justify-content-between"><%= status.user.name %>
+            <div class="text-end d-flex align-items-center gap-2">
+              <h5 class="card-title btn btn-secondary btn-sm m-0 text-white"><%= status.status %></h5>
+              <%= link_to 'Show', status, class: "btn btn-sm btn-info" %>
+              <%= link_to 'Edit', edit_status_path(status), class: "btn btn-sm btn-warning" %>
+              <%= link_to 'Destroy', status, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-text text-start">Date : <%= status.date.strftime('%d-%m-%Y %p') %></p>
+            <p class="card-text text-start">GitHub : <%= link_to status.github_pr_link, status.github_pr_link %></p>
+          </div>
+          <div class="card-footer text-body-secondary">
+            <%= time_ago_in_words(status.created_at) %> ago
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

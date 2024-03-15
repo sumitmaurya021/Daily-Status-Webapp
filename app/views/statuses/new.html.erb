@@ -1,7 +1,7 @@
 <div class="status-design">
     <div class="status-design-left">
-      <h3 class="text-white p-2">Daily Status Webapp</h3>
-      
+      <h3 id="logo" class="text-white p-2" style="font-size: 20px; display: flex; justify-content: center; margin-top: 10px">Daily Status Webapp</h3>
+      <h2 class="text-white p-2"><%= @user.name %></h2>
       <p class="borderdeignstatus"></p>
   
       <div class="d-flex flex-column gap-3 p-2">
@@ -13,7 +13,7 @@
     </div>
   
     <div class="status-design-right status-design-1">
-      <div class="statusheader">
+      <div class="statusheader sticky-top">
         <div class="dropdown d-flex justify-content-end">
           <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <p class="text-end m-0 p-2"><%= current_user.name %></p>
@@ -28,7 +28,7 @@
       <div class="statusnew">
         <div class="statusnewdesign">
             <h5 class="m-0 mb-3">New Status</h5>
-            <%= render partial: 'form', locals: { status: @status } %>
+            <%= render 'form', status: @status, users: @users %>
         </div>
     </div>
     </div>

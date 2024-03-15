@@ -14,24 +14,24 @@
   </div>
 
   <div class="status-design-right status-design-1">
-    <div class="statusheader">
-      <p class="text-end m-0 p-2"><%= current_user.name %></p>
+    <div class="statusheader sticky-top">
+      <div class="dropdown d-flex justify-content-end">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <p class="text-end m-0 p-2"><%= current_user.name %></p>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li><a class="dropdown-item" href="#">Setting</a></li>
+          <%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "dropdown-item" %>
+        </ul>
+      </div>
     </div>
     <div class="p-5">
       <div class="card">
         <div class="card-header">
           <div class="d-flex justify-content-between align-items-center">
             <div>
-              <div class="dropdown d-flex justify-content-end">
-                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <p class="text-end m-0 p-2"><%= current_user.name %></p>
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Profile</a></li>
-                  <li><a class="dropdown-item" href="#">Setting</a></li>
-                  <%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "dropdown-item" %>
-                </ul>
-              </div>
+              <p class="text-end m-0 p-2"><%= current_user.name %></p>
             </div>
             <div>
               <%= link_to 'Edit', edit_task_path(@task), class: "btn btn-sm btn-warning" %>

@@ -1,29 +1,38 @@
 <!-- app/views/statuses/_form.html.erb -->
-<div class="">
-<%= form_with(model: [@user, @status], local: true) do |form| %>
-  <% if @status.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@status.errors.count, "error") %> prohibited this status from being saved:</h2>
-      <ul>
-        <% @status.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+<div>
+  <%= form_with(model: @status, local: true, id: "status_form") do |form| %>
+    <% if @status.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@status.errors.count, "error") %> prohibited this status from being saved:</h2>
+        <ul>
+          <% @status.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <% if !current_user.admin? %>
+      <div class="field">
+        <%= form.label :github_pr_link, class: "form-label" %>
+        <%= form.text_field :github_pr_link, class: "form-control" %>
+      </div>
+
+      <div class="field">
+        <%= form.label :date, class: "form-label" %>
+        <%= form.datetime_local_field :date, class: "form-control" %>
+      </div>
+
+      <% else %>
+      <div class="field">
+        <%= form.label :remarks, class: "form-label" %>
+        <%= form.text_area :remarks, class: "form-control", id: "remarks" %>
+      </div>
+      <% end %>
+
+
+    <div class="actions d-flex justify-content-center mt-3">
+      <%= form.submit class: "btn btn-primary" %>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= form.label :github_pr_link, class: "form-label" %>
-    <%= form.text_field :github_pr_link, class: "form-control" %>
-  </div>
-
-  <div class="field">
-    <%= form.label :date, class: "form-label" %>
-    <%= form.datetime_local_field :date, class: "form-control" %>
-  </div>
-
-  <div class="actions d-flex justify-content-center mt-3">
-    <%= form.submit class: "btn btn-primary" %>
-  </div>
-<% end %>
 </div>

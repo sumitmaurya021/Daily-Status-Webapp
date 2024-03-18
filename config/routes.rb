@@ -13,9 +13,12 @@ Rails.application.routes.draw do
 
   resources :statuses do
     resources :tasks
-    member do
-      get 'resolve', to: 'statuses#resolve', as: :resolve_status
-      get 'complete', to: 'statuses#complete', as: :complete_status
+      member do
+        get 'mark_resolved'
+        get 'mark_completed'
     end
   end
+
+  post '/new_status', to: 'new_status#send_email'
+  put 'update_status', to: 'tasks#update_status'
 end

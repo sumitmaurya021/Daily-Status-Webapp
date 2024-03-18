@@ -1,6 +1,58 @@
+<div class="status-design">
+    <div class="status-design-left">
+      <h3 class="text-white p-2">Daily Status Webapp</h3>
+      <h2 class="text-white p-2"><%= @user.name %></h2>
+      <p class="borderdeignstatus"></p>
+  
+      <div class="d-flex flex-column gap-3 p-2">
+        <h3><%= link_to 'Dashboard', root_path, class: "btn btn-primary" %></h3>
+        <h3><%= link_to 'Statuses', statuses_path, class: "btn btn-primary" %></h3>
+        <h3><%= link_to 'New Status', new_status_path, class: "btn btn-primary" %></h3>
+        <h3><%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-primary" %></h3>
+      </div>
+    </div>
+  
+    <div class="status-design-right status-design-1">
+      <div class="statusheader sticky-top">
+        <div class="dropdown d-flex justify-content-end">
+          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <p class="text-end m-0 p-2"><%= current_user.name %></p>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><a class="dropdown-item" href="#">Setting</a></li>
+            <%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "dropdown-item" %>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-4 p-3">
+        <%= render 'form', status: @status %>
+        <%= link_to 'Show', @status %> |
+        <%= link_to 'Back', statuses_path %>
+      </div>
+    </div>
+  </div>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <h1>Edit Status</h1>
 
-<%= render 'form', status: @status %>
 
-<%= link_to 'Show', @status %> |
-<%= link_to 'Back', statuses_path %>

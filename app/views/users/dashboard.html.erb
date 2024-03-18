@@ -1,19 +1,41 @@
+<style>
+  .divider {
+    border-left: 1px solid #ccc; /* Adjust color and width as needed */
+    height: 50px; /* Adjust height as needed */
+    margin-left: 10px; /* Adjust spacing as needed */
+  }
+  
+  .logo {
+    padding-left: 10px; /* Adjust spacing as needed */
+  }
+</style>
+
 <div class="status-design">
     <div class="status-design-left">
       <h3 class="text-white p-2">Daily Status Webapp</h3>
-      
+      <h2 class="text-white p-2">
+        <h3 class="text-white p-2"><% if current_user.admin? %> Admin Dashboard <% else %> Employee Dashboard <% end %></h3>
+      </h2>
       <p class="borderdeignstatus"></p>
   
       <div class="d-flex flex-column gap-3 p-2">
+        
         <h3><%= link_to 'Dashboard', root_path, class: "btn btn-primary" %></h3>
+        <% if current_user.admin? %>
+        <h3><%= link_to 'Statuses', statuses_path, class: "btn btn-primary" %></h3>
+        <h3><%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-primary" %></h3>
+        <% else %>
         <h3><%= link_to 'Statuses', statuses_path, class: "btn btn-primary" %></h3>
         <h3><%= link_to 'New Status', new_status_path, class: "btn btn-primary" %></h3>
+        <h3><%= link_to "Check Out", checkouts_path, data: { turbo_method: :post }, class: "btn btn-primary" %></h3>
         <h3><%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-primary" %></h3>
+
+        <% end %>
       </div>
     </div>
   
     <div class="status-design-right status-design-1">
-      <div class="statusheader">
+      <div class="statusheader sticky-top">
         <div class="dropdown d-flex justify-content-end">
           <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <p class="text-end m-0 p-2"><%= current_user.name %></p>
@@ -23,6 +45,120 @@
             <li><a class="dropdown-item" href="/">Setting</a></li>
             <%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "dropdown-item" %>
           </ul>
+        </div>
+      </div>
+      <div>
+        <div>
+          <h2 class="text-dark p-2">Dashboard for > <%= current_user.name %></h2>
+        </div>
+        <div class="d-flex justify-content-center gap-5 mt-4">
+
+                <div class="card border-primary" style="max-width: 300px;">
+                  <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                      <h5 class="card-title text-primary">Employees <p class="card-text"><%= @employees_present_count %></p></h5>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="logo">
+                      <i class="fa-solid fa-users fa-3x text-primary"></i>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="card border-warning" style="max-width: 300px;">
+                  <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                      <h5 class="card-title text-warning">Pending Reviews
+                        <div class="row no-gutters align-items-center">
+                          <div class="col-auto">
+                              <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                <% if current_user.admin? %>
+                                <%= "#{@pending_reviews_count}/#{@total_reviews_count}" || 'Loading ..' %>
+                            <% else %>
+                                <%= "#{@current_employees_pending_reviews_count}/#{@current_employees_total_reviews_count}" || 'Loading ..' %>
+                            <% end %>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="logo">
+                      <i class="fa-solid fa-3x fa-clock text-warning"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card border-success" style="max-width: 300px;">
+                  <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                      <h5 class="card-title text-success">Completed Reviews
+                        <div class="row no-gutters align-items-center">
+                          <div class="col-auto">
+                              <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                <% if current_user.admin? %>
+                                <%= "#{@completed_reviews_count}/#{@total_reviews_count}" || 'Loading ..' %>
+                            <% else %>
+                                <%= "#{@current_employees_completed_reviews_count}/#{@current_employees_total_reviews_count}" || 'Loading ..' %>
+                            <% end %>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="logo"> 
+                      <i class="fa-solid fa-3x fa-list text-success"></i>
+                    </div>
+                  </div>
+                </div>
+
+
+
+        </div>
+
+        <div class="card shadow mb-4 mt-5">
+          <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Employees Check in-out Logs</h6>
+          </div>
+          <div class="card-body">
+              <div class="table-responsive">
+                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                      <thead>
+                          <tr>
+                              <th style="width: 10%;">#EmployeeID</th>
+                              <th style="width: 25%;">Timestamp</th>
+                              <th style="width: 15%;">Name</th>
+                              <th style="width: 15%;">Action</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <% if current_user.admin? %>
+                            <!-- Display logs for all users (admin view) -->
+                            <% @logs.order(timestamp: :desc).each do |log| %>
+                              <tr>
+                                <td><%= log.user.id %></td>
+                                <td><%= log.timestamp.strftime('%Y-%m-%d %I:%M:%S %p') %></td>
+                                <td><%= log.user.name %></td>
+                                <td><%= log.action %></td>
+                              </tr>
+                            <% end %>
+                          <% else %>
+                            <!-- Display logs for the current user -->
+                            <% current_user.logs.order(timestamp: :desc).each do |log| %>
+                              <tr>
+                                <td><%= log.user.id %></td>
+                                <td><%= log.timestamp.strftime('%Y-%m-%d %I:%M:%S %p') %></td>
+                                <td><%= log.user.name %></td>
+                                <td><%= log.action %></td>
+                              </tr>
+                            <% end %>
+                          <% end %>
+                        </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+          
         </div>
       </div>
     </div>

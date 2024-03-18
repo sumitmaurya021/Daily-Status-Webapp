@@ -3,9 +3,6 @@ class CheckoutsController < ApplicationController
 
   def create
     @checkout = current_user.checkouts.build(checkout_params)
-    @checkout.calculate_and_save_duration
-
-    # rest of the code
   end
 
 

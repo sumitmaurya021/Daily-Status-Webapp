@@ -19,10 +19,10 @@
       </div>
 
       <div class="field">
-        <%= form.label :date, class: "form-label" %>
-        <%= form.datetime_local_field :date, class: "form-control" %>
+        <%= form.label :date, "Date", class: "form-label" %>
+        <%= form.datetime_local_field :date, class: "form-control"%>
       </div>
-
+      
       <% else %>
       <div class="field">
         <%= form.label :remarks, class: "form-label" %>
@@ -32,7 +32,15 @@
 
 
     <div class="actions d-flex justify-content-center mt-3">
+      <% if current_user.admin? %>
+      <%= form.submit "Add Remarks", class: "btn btn-primary" %>
+      <% else %>
       <%= form.submit class: "btn btn-primary" %>
+    <% end %>
     </div>
+    <div class="actions d-flex justify-content-center mt-3 gap-3">
+      <%= link_to 'Show', @status, class: "btn btn-sm btn-info" %>
+      <%= link_to 'Back', statuses_path, class: "btn btn-sm btn-secondary" %>
+      </div>
   <% end %>
 </div>

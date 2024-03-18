@@ -31,27 +31,35 @@
     <p class="borderdeignstatus"></p>
 
     <div class="d-flex flex-column gap-3 p-2">
-      <h3><%= link_to 'Dashboard', root_path, class: "btn btn-primary" %></h3>
-      <h3><%= link_to 'Statuses', statuses_path, class: "btn btn-primary" %></h3>
-      <h3><%= link_to 'New Status', new_status_path, class: "btn btn-primary" %></h3>
-      <h3><%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-primary" %></h3>
+      <h3><%= link_to 'Dashboard', root_path, class: "custom-link" %></h3>
+      <h3><%= link_to 'Statuses', statuses_path, class: "custom-link" %></h3>
+      <% if current_user.admin? %>
+        <% else %>
+        <h3><%= link_to 'New Status', new_status_path, class: "custom-link" %></h3>
+        <h3><%= link_to "Check Out", checkouts_path, data: { turbo_method: :post }, class: "custom-link" %></h3>
+        <% end %>
+      <h3><%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "custom-link" %></h3>
     </div>
   </div>
 
   <div class="status-design-right status-design-1">
     <div class="statusheader sticky-top">
-      <div class="dropdown d-flex justify-content-end">
+      <div class="dropdown d-flex justify-content-end" id="profileDropdown">
         <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <p class="text-end m-0 p-2"><%= current_user.name %></p>
+            <% if current_user.admin? %>
+                <i class="fa fa-solid fa-crown"></i>
+            <% else %>
+            <i class="fa-solid fa-user"></i>
+            <% end %>
+            <p class="text-end m-0 p-2"><%= current_user.name %></p>
         </a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Profile</a></li>
-          <li><a class="dropdown-item" href="#">Setting</a></li>
-          <%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "dropdown-item" %>
+        <ul class="dropdown-menu" id="profileDropdownMenu">
+            <%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "dropdown-item logout-link" %>
         </ul>
-      </div>
     </div>
-    <div class="mt-4 p-3">
+    </div>
+    <div class="mt-4 p-3 ms-4 mx-4">
+      <% if @statuses.present? %>
       <% @statuses.each do |status| %>
         <div class="card text-center mb-5 statusshadow">
           <div class="card-header text-start d-flex justify-content-between"><%= status.user.name %>
@@ -71,19 +79,19 @@
 
               <% if !current_user.admin? %>
               <%= button_to edit_status_path(status), method: :get, class: 'btn btn-sm btn-warning', remote: true do %>
-              Edit
+              </i>Edit
               <% end %>
             <% end %>
 
                <% if current_user.admin? %>
-                <%= button_to status_path(status), method: :delete, class: 'btn btn-danger mr-2', data: { turbo_confirm: 'Are you sure?' }, remote: true do %>
+                <%= button_to status_path(status), method: :delete, class: 'btn btn-sm btn-danger', data: { turbo_confirm: 'Are you sure?' }, remote: true do %>
                     <i class="fas fa-trash"></i> Delete
                 <% end %>
               <% end %>
 
               <% if current_user.admin? %>
               <% if @status.status = "pending" || @status.status = "resolved" %>
-                <%= link_to edit_status_path(status), class: "btn btn-success float-right mb-3", title: "New Status" do %>
+                <%= link_to edit_status_path(status), class: "btn btn-sm btn-secondary", title: "New Status" do %>
                     <i class="fas fa-plus"></i> Add Remark
                 <% end %>
               <% end %>
@@ -124,21 +132,10 @@
           </div>
         </div>
       <% end %>
+      <% else %>
+      <h3 class="text-center">No Statuses Found</h3>
+      <% end %>
     </div>
   </div>
 </div>
 
-
-
-<script>
-  const logo = document.getElementById('logo');
-
-logo.addEventListener('mouseover', () => {
-    logo.style.transform = 'scale(1.2)';
-});
-
-logo.addEventListener('mouseout', () => {
-    logo.style.transform = 'scale(1)';
-});
-
-</script>

@@ -5,29 +5,36 @@
       <p class="borderdeignstatus"></p>
   
       <div class="d-flex flex-column gap-3 p-2">
-        <h3><%= link_to 'Dashboard', root_path, class: "btn btn-primary" %></h3>
-        <h3><%= link_to 'Statuses', statuses_path, class: "btn btn-primary" %></h3>
-        <h3><%= link_to 'New Status', new_status_path, class: "btn btn-primary" %></h3>
-        <h3><%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-primary" %></h3>
+        <h3><%= link_to 'Dashboard', root_path, class: "custom-link" %></h3>
+        <h3><%= link_to 'Statuses', statuses_path, class: "custom-link" %></h3>
+        <% if current_user.admin? %>
+        <% else %>
+        <h3><%= link_to 'New Status', new_status_path, class: "custom-link" %></h3>
+        <h3><%= link_to "Check Out", checkouts_path, data: { turbo_method: :post }, class: "custom-link" %></h3>
+        <% end %>
+        <h3><%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "custom-link" %></h3>
       </div>
     </div>
   
     <div class="status-design-right status-design-1">
       <div class="statusheader sticky-top">
-        <div class="dropdown d-flex justify-content-end">
+        <div class="dropdown d-flex justify-content-end" id="profileDropdown">
           <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <p class="text-end m-0 p-2"><%= current_user.name %></p>
+              <% if current_user.admin? %>
+                  <i class="fa fa-solid fa-crown"></i>
+              <% else %>
+              <i class="fa-solid fa-user"></i>
+              <% end %>
+              <p class="text-end m-0 p-2"><%= current_user.name %></p>
           </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><a class="dropdown-item" href="#">Setting</a></li>
-            <%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "dropdown-item" %>
+          <ul class="dropdown-menu" id="profileDropdownMenu">
+              <%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "dropdown-item logout-link" %>
           </ul>
-        </div>
+      </div>
       </div>
       <div class="statusnew">
         <div class="statusnewdesign">
-            <h5 class="m-0 mb-3">New Status</h5>
+            <h5 class="m-0 mb-3"><% if current_user.admin? %>Add Remarks <% else %>Add Status <% end %></h5>
             <%= render 'form', status: @status, users: @users %>
         </div>
     </div>

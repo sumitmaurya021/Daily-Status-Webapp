@@ -22,8 +22,11 @@
         </td>
         <td><%= link_to task.status.github_pr_link, task.status.github_pr_link %></td>
         <td><%= link_to 'Show', task %></td>
+        <% if current_user_admin? %>
+        <% else %>
         <td><%= link_to 'Edit', edit_task_path(task) %></td>
         <td><%= link_to 'Destroy', task, data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

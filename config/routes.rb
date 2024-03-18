@@ -2,10 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
 
     root to: "users#dashboard"
-
-    # Add this to your routes.rb file
     post '/checkouts', to: 'checkouts#process_checkouts'
-
 
   resources :tasks
   resources :statuses

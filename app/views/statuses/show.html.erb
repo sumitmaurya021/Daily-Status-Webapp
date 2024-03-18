@@ -30,7 +30,7 @@
     <div class="mt-4 p-3 d-flex gap-5 statusboxshadow">
       <h5>github_pr_link : <%= link_to @status.github_pr_link,  @status.github_pr_link   %></h5>
       <h5>Employee :  <%= @status.user&.name || "Unknown" %></h5>
-      <h5>Date : <%= @status.date.strftime("%Y-%m-%d") %></h5>
+      <h5>Date : <%= @status.date&.strftime("%Y-%m-%d") %></h5>
     </div>
     <div>
       <div class="d-flex justify-content-between p-3 mt-4">

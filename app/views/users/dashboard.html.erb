@@ -25,7 +25,13 @@
         <h3><%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "custom-link" %></h3>
         <% else %>
         <h3><%= link_to 'Statuses', statuses_path, class: "custom-link" %></h3>
-        <h3><%= link_to 'New Status', new_status_path, class: "custom-link" %></h3>
+
+        <% if @user.has_submitted_status_today? %>
+          <h3 class="custom-link text-danger">You have already created a status today.</h3>
+        <% else %>
+          <h3><%= link_to 'New Status', new_status_path, class: "custom-link" %></h3>
+        <% end %>
+
         <h3><%= link_to "Check Out", checkouts_path, data: { turbo_method: :post }, class: "custom-link" %></h3>
         <h3><%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete}, class: "custom-link"%></h3>
         <% end %>

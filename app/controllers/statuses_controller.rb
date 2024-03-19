@@ -4,6 +4,7 @@ class StatusesController < ApplicationController
   before_action :current_user_admin?
   def index
     @user = current_user
+    @has_submitted_status_today = current_user.has_submitted_status_today?
     if current_user.admin?
       @statuses = Status.all
     else
@@ -22,8 +23,12 @@ class StatusesController < ApplicationController
 
   def new
     @user = current_user
-    @status = Status.new(status: "pending", remarks: nil)
     @users = User.all
+    if current_user.has_submitted_status_today?
+      redirect_to root_path, alert: "You have already created a status today."
+    else
+      @status = Status.new(status: "Pending", remarks: nil)
+    end
   end
 
   def edit

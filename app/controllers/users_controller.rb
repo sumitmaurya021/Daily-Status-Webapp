@@ -14,6 +14,5 @@ class UsersController < ApplicationController
     @current_employees_total_reviews_count = Status.where(user_id: employee_id).count
     @logs = Log.all
     @total_statuses_count = current_user.statuses.count
-
   end
 end

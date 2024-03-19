@@ -10,7 +10,11 @@
       <h3><%= link_to 'Statuses', statuses_path, class: "custom-link" %></h3>
       <% if current_user.admin? %>
         <% else %>
-        <h3><%= link_to 'New Status', new_status_path, class: "custom-link" %></h3>
+        <% if @user.has_submitted_status_today? %>
+          <h3 class="custom-link text-danger">You have already created a status today.</h3>
+        <% else %>
+          <h3><%= link_to 'New Status', new_status_path, class: "custom-link" %></h3>
+        <% end %>
         <% end %>
       <h3><%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "custom-link" %></h3>
     </div>
@@ -40,6 +44,7 @@
     <div>
       <div class="d-flex justify-content-between p-3 mt-4">
         <h3>Tasks:</h3>
+        
         <%= link_to 'Create New Task', new_task_path(status_id: @status.id), class: "btn btn-primary" %>
       </div>
       <div class="row gx-0 justify-content-center gap-4">

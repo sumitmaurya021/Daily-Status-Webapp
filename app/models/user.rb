@@ -21,8 +21,8 @@ class User < ApplicationRecord
     self.checkin_at
   end
 
-  def has_checked_out_today?
-    checkouts.exists?(created_at: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)
+  def has_submitted_status_today?
+    statuses.exists?(created_at: Date.today.beginning_of_day..Date.today.end_of_day)
   end
 
 end

@@ -35,7 +35,7 @@ class StatusesController < ApplicationController
     set_status_attribute
     @status.user = current_user
     if @status.save
-      AdminMailer.new_status_email(current_user, @status).deliver_now # Make sure @status is passed here
+      AdminMailer.new_status_email(current_user, @status).deliver_now
       flash[:notice] = "Status created successfully"
       redirect_to status_path(@status)
     else
@@ -116,7 +116,7 @@ class StatusesController < ApplicationController
   end
 
   def current_user_admin?
-    current_user.admin? # Assuming you have an `admin?` method in your `User` model
+    current_user.admin?
   end
 
 end

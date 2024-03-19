@@ -9,12 +9,9 @@ class Users::SessionsController < Devise::SessionsController
   # end
 
   # POST /resource/sign_in
-  def create
-    super do |user|
-      AdminMailer.check_in_email(user, user.current_sign_in_at).deliver_now
-      statuses_path
-    end
-  end
+  # def create
+  #   super
+  # end
 
   # DELETE /resource/sign_out
   # def destroy

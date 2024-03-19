@@ -4,6 +4,8 @@ class UsersController < ApplicationController
     @employees_present_count = User.where(role: 'employee').count
     @total_employees_count = User.count
     @pending_reviews_count = Status.where(status: 'pending').count
+    @resolved_reviews_count = Status.where(status: 'resolved').count
+    @issued_reviews_count = Status.where(status: 'issue').count
     @completed_reviews_count = Status.where(status: 'completed').count
     @total_reviews_count = Status.count
     employee_id = current_user.id
@@ -12,5 +14,6 @@ class UsersController < ApplicationController
     @current_employees_total_reviews_count = Status.where(user_id: employee_id).count
     @logs = Log.all
     @total_statuses_count = current_user.statuses.count
+
   end
 end

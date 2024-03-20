@@ -25,7 +25,13 @@
         <h3><%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "custom-link" %></h3>
         <% else %>
         <h3><%= link_to 'Statuses', statuses_path, class: "custom-link" %></h3>
-        <h3><%= link_to 'New Status', new_status_path, class: "custom-link" %></h3>
+
+        <% if @user.has_submitted_status_today? %>
+          <h3 class="custom-link text-danger">You have already created a status today.</h3>
+        <% else %>
+          <h3><%= link_to 'New Status', new_status_path, class: "custom-link" %></h3>
+        <% end %>
+
         <h3><%= link_to "Check Out", checkouts_path, data: { turbo_method: :post }, class: "custom-link" %></h3>
         <h3><%= link_to 'Logout', destroy_user_session_path, data: {turbo_method: :delete}, class: "custom-link"%></h3>
         <% end %>
@@ -57,30 +63,30 @@
         </div>
         <div class="d-flex flex-wrap justify-content-center gap-5 mt-4">
 
-                <div class="card border-primary hovereffect" style="max-width: 300px;">
+                <div class="card hovereffect" style="max-width: 300px; border-color: #a622cd">
                   <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
-                      <h5 class="card-title text-primary">Employees <p class="card-text"><%= @employees_present_count %></p></h5>
+                      <h5 class="card-title" style="color: #a622cd">Employees <p class="card-text"><%= employees_present_count %></p></h5>
                     </div>
                     <div class="divider"></div>
                     <div class="logo">
-                      <i class="fa-solid fa-users fa-3x text-primary"></i>
+                      <i class="fa-solid fa-users fa-3x" style="color: #a622cd"></i>
                     </div>
                   </div>
                 </div>
 
 
-                <div class="card border-warning hovereffect" style="max-width: 300px;">
+                <div class="card border-primary hovereffect" style="max-width: 300px;">
                   <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
-                      <h5 class="card-title text-warning">Pending Reviews
+                      <h5 class="card-title text-primary">Pending Reviews
                         <div class="row no-gutters align-items-center">
                           <div class="col-auto">
                               <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
                                 <% if current_user.admin? %>
-                                <%= "#{@pending_reviews_count}/#{@total_reviews_count}" || 'Loading ..' %>
+                                <%= "#{pending_reviews_count}/#{total_reviews_count}" || 'Loading ..' %>
                             <% else %>
-                                <%= "#{@current_employees_pending_reviews_count}/#{@current_employees_total_reviews_count}" || 'Loading ..' %>
+                                <%= "#{current_employees_pending_reviews_count}/#{current_employees_total_reviews_count}" %>
                             <% end %>
                               </div>
                           </div>
@@ -88,7 +94,7 @@
                     </div>
                     <div class="divider"></div>
                     <div class="logo">
-                      <i class="fa-solid fa-3x fa-clock text-warning"></i>
+                      <i class="fa-solid fa-3x fa-clock text-primary"></i>
                     </div>
                   </div>
                 </div>
@@ -101,9 +107,9 @@
                           <div class="col-auto">
                               <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
                                 <% if current_user.admin? %>
-                                <%= "#{@completed_reviews_count}/#{@total_reviews_count}" || 'Loading ..' %>
+                                <%= "#{completed_reviews_count}/#{total_reviews_count}" || 'Loading ..' %>
                             <% else %>
-                                <%= "#{@current_employees_completed_reviews_count}/#{@current_employees_total_reviews_count}" || 'Loading ..' %>
+                                <%= "#{current_employees_completed_reviews_count}/#{current_employees_total_reviews_count}" || 'Loading ..' %>
                             <% end %>
                               </div>
                           </div>
@@ -111,7 +117,7 @@
                     </div>
                     <div class="divider"></div>
                     <div class="logo"> 
-                      <i class="fa-solid fa-3x fa-list text-success"></i>
+                      <i class="fa-solid fa-3x fa-list-check text-success"></i>
                     </div>
                   </div>
                 </div>
@@ -121,16 +127,39 @@
                     <div class="card border-dark hovereffect" style="max-width: 300px;">
                       <div class="card-body d-flex justify-content-between align-items-center">
                         <div>
-                          <h5 class="card-title text-warning-emphasis">Total Statuses <p class="card-text"><%= @total_statuses_count %></p></h5>
+                          <h5 class="card-title text-warning-emphasis">Total Statuses <p class="card-text"><%= total_statuses_count %></p></h5>
                         </div>
                         <div class="divider"></div>
                         <div class="logo">
-                          <i class="fa-solid fa-users fa-3x text-warning-emphasis"></i>
+                          <i class="fa-solid fa-file-lines fa-3x text-warning-emphasis"></i>
                         </div>
                       </div>
                     </div>
                   <% end %>
+                    
+                  <div class="card border-warning hovereffect" style="max-width: 300px;">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                      <div>
+                        <h5 class="card-title text-warning">Resolved Status <p class="card-text"><%= resolved_reviews_count %></p></h5>
+                      </div>
+                      <div class="divider"></div>
+                      <div class="logo">
+                        <i class="fa-solid fa-check-double fa-3x text-warning"></i>
+                      </div>
+                    </div>
+                  </div>
 
+                  <div class="card border-danger hovereffect" style="max-width: 300px;">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                      <div>
+                        <h5 class="card-title text-danger">Issues Status <p class="card-text"><%= issued_reviews_count %></p></h5>
+                      </div>
+                      <div class="divider"></div>
+                      <div class="logo">
+                        <i class="fa-solid fa-triangle-exclamation fa-3x text-danger"></i>
+                      </div>
+                    </div>
+                  </div>
 
         </div>
 

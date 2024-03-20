@@ -21,8 +21,34 @@ class User < ApplicationRecord
     self.checkin_at
   end
 
-  def has_checked_out_today?
-    checkouts.exists?(created_at: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)
+  def has_submitted_status_today?
+    statuses.exists?(created_at: Date.today.beginning_of_day..Date.today.end_of_day)
+  end
+
+  scope :employees, -> { where(role: 'employee') }
+
+  def self.employee_count
+    employees.count
+  end
+
+  def self.total_count
+    count
+  end
+
+  def total_statuses_count
+    statuses.count
+  end
+
+  def pending_reviews_count
+    statuses.pending.count
+  end
+
+  def completed_reviews_count
+    statuses.completed.count
+  end
+
+  def total_reviews_count
+    statuses.count
   end
 
 end

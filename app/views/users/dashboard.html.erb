@@ -66,7 +66,7 @@
                 <div class="card hovereffect" style="max-width: 300px; border-color: #a622cd">
                   <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
-                      <h5 class="card-title" style="color: #a622cd">Employees <p class="card-text"><%= @employees_present_count %></p></h5>
+                      <h5 class="card-title" style="color: #a622cd">Employees <p class="card-text"><%= employees_present_count %></p></h5>
                     </div>
                     <div class="divider"></div>
                     <div class="logo">
@@ -84,9 +84,9 @@
                           <div class="col-auto">
                               <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
                                 <% if current_user.admin? %>
-                                <%= "#{@pending_reviews_count}/#{@total_reviews_count}" || 'Loading ..' %>
+                                <%= "#{pending_reviews_count}/#{total_reviews_count}" || 'Loading ..' %>
                             <% else %>
-                                <%= "#{@current_employees_pending_reviews_count}/#{@current_employees_total_reviews_count}" || 'Loading ..' %>
+                                <%= "#{current_employees_pending_reviews_count}/#{current_employees_total_reviews_count}" %>
                             <% end %>
                               </div>
                           </div>
@@ -107,9 +107,9 @@
                           <div class="col-auto">
                               <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
                                 <% if current_user.admin? %>
-                                <%= "#{@completed_reviews_count}/#{@total_reviews_count}" || 'Loading ..' %>
+                                <%= "#{completed_reviews_count}/#{total_reviews_count}" || 'Loading ..' %>
                             <% else %>
-                                <%= "#{@current_employees_completed_reviews_count}/#{@current_employees_total_reviews_count}" || 'Loading ..' %>
+                                <%= "#{current_employees_completed_reviews_count}/#{current_employees_total_reviews_count}" || 'Loading ..' %>
                             <% end %>
                               </div>
                           </div>
@@ -127,7 +127,7 @@
                     <div class="card border-dark hovereffect" style="max-width: 300px;">
                       <div class="card-body d-flex justify-content-between align-items-center">
                         <div>
-                          <h5 class="card-title text-warning-emphasis">Total Statuses <p class="card-text"><%= @total_statuses_count %></p></h5>
+                          <h5 class="card-title text-warning-emphasis">Total Statuses <p class="card-text"><%= total_statuses_count %></p></h5>
                         </div>
                         <div class="divider"></div>
                         <div class="logo">
@@ -140,7 +140,7 @@
                   <div class="card border-warning hovereffect" style="max-width: 300px;">
                     <div class="card-body d-flex justify-content-between align-items-center">
                       <div>
-                        <h5 class="card-title text-warning">Resolved Status <p class="card-text"><%= @resolved_reviews_count %></p></h5>
+                        <h5 class="card-title text-warning">Resolved Status <p class="card-text"><%= resolved_reviews_count %></p></h5>
                       </div>
                       <div class="divider"></div>
                       <div class="logo">
@@ -152,7 +152,7 @@
                   <div class="card border-danger hovereffect" style="max-width: 300px;">
                     <div class="card-body d-flex justify-content-between align-items-center">
                       <div>
-                        <h5 class="card-title text-danger">Issues Status <p class="card-text"><%= @issued_reviews_count %></p></h5>
+                        <h5 class="card-title text-danger">Issues Status <p class="card-text"><%= issued_reviews_count %></p></h5>
                       </div>
                       <div class="divider"></div>
                       <div class="logo">

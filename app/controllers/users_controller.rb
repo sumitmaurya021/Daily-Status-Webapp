@@ -1,18 +1,17 @@
 class UsersController < ApplicationController
   def dashboard
     @user = current_user
-    @employees_present_count = User.where(role: 'employee').count
-    @total_employees_count = User.count
-    @pending_reviews_count = Status.where(status: 'pending').count
-    @resolved_reviews_count = Status.where(status: 'resolved').count
-    @issued_reviews_count = Status.where(status: 'issue').count
-    @completed_reviews_count = Status.where(status: 'completed').count
-    @total_reviews_count = Status.count
-    employee_id = current_user.id
-    @current_employees_pending_reviews_count = Status.where(user_id: employee_id, status: 'pending').count
-    @current_employees_completed_reviews_count = Status.where(user_id: employee_id, status: 'completed').count
-    @current_employees_total_reviews_count = Status.where(user_id: employee_id).count
+    @employees_present_count = User.employee_count
+    @total_employees_count = User.total_count
+    @pending_reviews_count = Status.pending_count
+    @resolved_reviews_count = Status.resolved_count
+    @issued_reviews_count = Status.issue_count
+    @completed_reviews_count = Status.completed_count
+    @total_reviews_count = Status.total_count
+    @current_employees_pending_reviews_count = current_user.pending_reviews_count
+    @current_employees_completed_reviews_count = current_user.completed_reviews_count
+    @current_employees_total_reviews_count = current_user.total_reviews_count
     @logs = Log.all
-    @total_statuses_count = current_user.statuses.count
+    @total_statuses_count = current_user.total_statuses_count
   end
 end

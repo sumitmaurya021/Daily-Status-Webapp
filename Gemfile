@@ -1,9 +1,10 @@
 source "https://rubygems.org"
 
-ruby "3.2.3"
+ruby "3.4.5"
 gem 'devise'
 gem "pry-rails"
 gem 'cancancan'
+gem "rubycritic", require: false
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.1.3"
